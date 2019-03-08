@@ -11,11 +11,11 @@ import Authenticated from './components/Authenticated';
 import NotAuthenticated from './components/NotAuthenticated';
 import { HOME, TEST, AUTHENTICATED, NOT_AUTHENTICATED } from './Constants/Routes';
 import Firebase from './components/Firebase/firebase';
+import Keyword from './keyword';
 
 class App extends Component {
 
   componentDidMount(){
-    console.log(process.env)
   }
   render() {
     return (
@@ -28,10 +28,10 @@ class App extends Component {
             <Route path={AUTHENTICATED} component={Authenticated}></Route>
             <Route path={NOT_AUTHENTICATED} component={NotAuthenticated}></Route>
           </div>
-        </div>
+       </div>
       </BrowserRouter>
     );
   }
-}
+} 
 
 export default App;
