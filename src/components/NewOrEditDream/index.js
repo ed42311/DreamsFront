@@ -10,7 +10,9 @@ import ImageContainer from './ImagesContainer';
 import { commonWords, archetypes } from './archetypes';
 import { BlobInputContainerS } from '../Style';
 
-const { REACT_APP_BACKEND_URL } = process.env;
+const { 
+  REACT_APP_BACKEND_URL, 
+} = process.env;
 
 class NewDreamPage extends Component {
 
@@ -34,6 +36,7 @@ class NewDreamPage extends Component {
       this.setState({imgUrlArr});
     }
   }
+
 
   handleChange = (e) => {
     e.preventDefault();

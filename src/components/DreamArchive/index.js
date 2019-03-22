@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import deepai from 'deepai';
 import { Link } from 'react-router-dom';
 
 import ColorBlob from '../ColorBlob';
 import { AuthUserContext, withAuthorization } from '../Session';
 
-const { REACT_APP_BACKEND_URL } = process.env;
+const { 
+  REACT_APP_BACKEND_URL,
+  REACT_APP_DD_API_KEY  
+} = process.env;
+
+deepai.setApiKey(REACT_APP_DD_API_KEY);
 
 class ArchivePage extends Component {
   constructor(props) {
@@ -25,6 +31,26 @@ class ArchivePage extends Component {
       })
   }
 
+  callToDeep =  async (i) => {
+    const dreams = this.state.dreams.slice();
+    const images = await Promise.all(dreams[i].images.map(async (obj, i) => {
+      const resp = await deepai.callStandardApi("neural-style", {
+        style: 'http://www.suttonmemorial.com/pht/2014-08-21-William%20D%20Bill%20Bergen.jpg',
+        content: obj.url
+      });
+      obj.url = resp.output_url;
+      obj.dreamed = true
+      return obj;
+    }))
+    dreams[i].images = images
+    this.setState({dreams, loading: false})
+  }
+
+  deepDreamOnClick = async (e, i) => {
+    this.callToDeep(i)
+    this.setState({loading: true})
+  }
+
   render() {
     return(
       <PageStyle>
@@ -42,10 +68,11 @@ class ArchivePage extends Component {
                 <p>Looks like you haven't journaled any dreams yet!
                 Click New Dream to get started!</p>
               }
-              {this.state.dreams.map( (dream) =>
+              {this.state.dreams.map( (dream, index) =>
                 <DreamDiv key={dream._id} >
                   <TitleRowDiv>
                     <DreamTitle>{dream.title}</DreamTitle>
+                    <button onClick={(e) => this.deepDreamOnClick(e, index)}>AButton</button>
                     <Link to={{
                       pathname: './editDream',
                       state: {
@@ -64,7 +91,8 @@ class ArchivePage extends Component {
                   <StyledHR />
                   <ImgRowDiv>
                     {!!dream.images.length &&
-                      dream.images.map( (image) => <StyledImg src={image.url} key={image._id}/>)
+                      dream.images.map( (image) => 
+                        <StyledImg dreamed src={image.url} key={image._id}/>)
                     }
                   </ImgRowDiv>
                 </DreamDiv>
@@ -115,6 +143,9 @@ const BlobInputContainerSS = styled.div`
 `
 
 const StyledImg = styled.img`
+  ${props => props.dreamed && css`
+    width: 40%;
+  `}
   height: 100%;
   margin: 10px;
   border-radius: 15px;
