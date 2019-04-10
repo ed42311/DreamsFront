@@ -1,15 +1,19 @@
 language: node_js
 node_js:
   "10.12.0"
+services:
+  - mongodb
 dist: trusty
 sudo: false
 addons:
   chrome: stable
 before_script:
-  npm run dev &
+  - npm run dev
 before_install:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-  - git clone https://github.com/Montana-Code-School/DreamsBack.git & cd DreamsBack & npm run dev &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
+  - git clone https://github.com/Montana-Code-School/DreamsBack.git
+  - cd DreamsBack && git checkout test-travis && npm install 
+  - npm run dev && cd ..
 cache:
   directories:
     "node_modules"
