@@ -7,15 +7,17 @@ sudo: false
 addons:
   chrome: stable
 before_install:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
-  - git clone https://github.com/Montana-Code-School/DreamsBack.git
-  - cd DreamsBack
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+install:
+  - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
+  - cd $TRAVIS_REPO_SLUG
   - git checkout test-travis
-  - npm install 
-  - npm run dev && cd ..
-  - echo wtf?
 before_script:
   - npm run dev
+script:
+  - npm run test
+after_script:
+  - echo its done
 branches:
   only:
   - test-travis
