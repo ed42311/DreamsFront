@@ -6,7 +6,7 @@ dist: trusty
 sudo: false
 addons:
   chrome: stable
-  before_install:
+before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
   - git clone https://github.com/Montana-Code-School/DreamsBack.git
   - cd DreamsBack
