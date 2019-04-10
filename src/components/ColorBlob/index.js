@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import styled from "styled-components";
 import { throttle } from 'lodash';
+
+import { CanvasContainer, BlobOnCanvas, CanvasStitch } from './styled';
 
 let y2;
 export default class ColorBlob extends Component{
@@ -214,24 +215,3 @@ export default class ColorBlob extends Component{
     )
   }
 }
-//import CanvasContainer places and change size with this props thing in styling
-const CanvasContainer = styled.div`
-  z-index: -1;
-  position: relative;
-  top: ${props => props.topAlign}rem;
-  left: ${props => props.leftAlign}rem;
-  width: ${props => props.canvasWidth}vw;
-  height: ${props => props.canvasHeight}vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-const BlobOnCanvas = styled.canvas`
-  width:${props => props.blobWidth}%;
-  align-items: center;
-`
-const CanvasStitch = styled.canvas`
-display: flex;
-justify-content: center;
-align-items: center;
-`
